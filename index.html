@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Campus Copilot</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f3f7f5;--cd:#fff;--tx:#10231f;--mt:#5d7771;--bd:#dce7e3;--ac:#0f766e;--ac2:#14b8a6;--am:#f59e0b;--ok:#059669;--nb:64px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a1714;--cd:#11221e;--tx:#e6f2ee;--mt:#8fb0a7;--bd:#1f3a34}}
+:root[data-theme=dark]{--bg:#0a1714;--cd:#11221e;--tx:#e6f2ee;--mt:#8fb0a7;--bd:#1f3a34}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif}
+h2,h3{margin:14px 0 6px;font-family:Georgia,"Times New Roman",serif}
+button,input,select{font:inherit;color:inherit}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:left}
+button.card{cursor:pointer;transition:.2s;display:flex;flex-direction:column;gap:4px;font-weight:600}
+button.card:hover{border-color:var(--ac);transform:translateY(-2px)}
+button.card b{font-size:22px}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}.btn.ok{background:var(--ok)}
+.pill{background:#0f766e22;color:var(--ac);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600}
+.mut{color:var(--mt)}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);margin:6px 0}
+#login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#064e3b,#0f766e 60%,#14b8a6)}
+#login .card{width:100%;max-width:380px;padding:26px}
+#app{display:flex;min-height:100vh}
+aside{display:none}
+#wrap{flex:1;min-width:0}
+header{display:flex;align-items:center;gap:10px;padding:12px 16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+header h1{font:700 20px Georgia,serif;margin:0;flex:1}
+#bell b{background:var(--am);color:#10231f;border-radius:99px;padding:0 7px;font-size:12px}
+main{padding:0 16px calc(var(--nb) + 24px);max-width:1000px;margin:auto}
+#bnav{position:fixed;bottom:0;left:0;right:0;display:flex;overflow-x:auto;background:var(--cd);border-top:1px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:6;gap:2px}
+.nv{border:0;background:none;border-radius:10px;padding:6px 10px;white-space:nowrap;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--mt)}
+.nv.on{color:var(--ac);background:#0f766e1a;font-weight:700}
+.brand{font:700 19px Georgia,serif;padding:6px 10px 14px}
+@media(min-width:860px){:root{--nb:0px}aside{display:flex;flex-direction:column;gap:2px;width:230px;padding:18px 12px;border-right:1px solid var(--bd);position:sticky;top:0;height:100vh}#sn{display:flex;flex-direction:column}#bnav{display:none}.nv{flex-direction:row;gap:10px;font-size:14px;padding:10px 12px}}
+.g{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.qa{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.g2{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--bd);background:var(--cd);border-radius:99px;padding:5px 12px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.hero{background:linear-gradient(135deg,#064e3b,#0f766e);color:#fff;border:0}
+.hero .mut{color:#b7e4dc}.hero h2{margin:4px 0}
+.cl{display:flex;gap:14px;align-items:center;margin:8px 0}
+.tm{min-width:76px;font-weight:700;color:var(--ac)}
+.now{border-color:var(--ok);background:#05966914}.up{border-color:var(--am)}
+.ev h3{margin:8px 0 4px}.ev p{margin:4px 0}
+.b{max-width:88%;padding:10px 14px;border-radius:16px;margin:8px 0}
+.b.u{background:var(--ac);color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+.b.a{background:var(--cd);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.src{font-size:12px;color:var(--mt);margin-top:6px}
+.dots i{display:inline-block;width:7px;height:7px;margin-right:3px;border-radius:50%;background:var(--ac);animation:bn 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bn{50%{transform:translateY(-5px);opacity:.4}}
+.cin{position:sticky;bottom:calc(var(--nb) + 8px);background:var(--bg);padding:8px 0}
+.cin .row{flex-wrap:nowrap}.cin input{margin:0}
+.n circle{fill:var(--cd);stroke:var(--ac);stroke-width:2;cursor:pointer}
+.n{cursor:pointer}.n text{text-anchor:middle;font-size:15px;pointer-events:none}
+.n .lb{font-size:10px;font-weight:700;fill:var(--tx)}
+.n.hl circle{fill:#fde68a;stroke:var(--am);stroke-width:4}.n.sel circle{fill:var(--ac2)}
+.rt{fill:none;stroke:var(--am);stroke-width:4;stroke-dasharray:8 6;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+details.card summary{cursor:pointer;font-weight:700;list-style:none}
+details ol{padding-left:20px;margin:6px 0}
+.sk{height:84px;border-radius:14px;margin:10px 0;background:linear-gradient(90deg,var(--bd),var(--cd),var(--bd));background-size:200% 100%;animation:sh 1.1s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.empty{text-align:center;padding:24px 8px;color:var(--mt)}
+.nt{padding:8px 0;border-bottom:1px solid var(--bd)}
+#np{position:fixed;right:12px;top:calc(60px + env(safe-area-inset-top,0px));width:min(320px,92vw);z-index:9;box-shadow:0 10px 30px #0004}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#10231f;color:#fff;padding:8px 16px;border-radius:99px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+#toast.show{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div id=login><div class=card><div style="font-size:34px">🎓</div><h2 style="margin:4px 0">Campus Copilot</h2><p class=mut style="margin:0 0 10px">Greenfield Institute of Technology — your AI campus assistant</p><input id=em type=email placeholder="Student email" autocomplete=username><input id=pw type=password placeholder=Password autocomplete=current-password><p id=er style="color:#dc2626;margin:4px 0;font-size:13px"></p><button class=btn style="width:100%" data-a=login>Sign in</button><button class="btn ghost" style="width:100%;margin-top:8px" data-a=demo>Continue with Demo Account</button><p class=mut style="font-size:12px">Demo login: rahul.sharma@greenfield.edu / demo123</p></div></div>
+<div id=app hidden><aside><div class=brand>🎓 Campus Copilot</div><div id=sn></div></aside><div id=wrap><header><h1 id=ttl></h1><span class=pill id=demo title="Developer indicator">🛠 Demo AI mode</span><button class="btn ghost" id=bell data-a=bell>🔔 <b id=cnt>4</b></button></header><main id=main></main></div><nav id=bnav></nav></div>
+<div id=np class=card hidden></div><div id=toast></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';'),R=s=>s.trim().split('\n').map(r=>r.split('|'));
+const st={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const U={name:'Rahul Sharma',email:'rahul.sharma@greenfield.edu',dept:'Computer Science & Engineering',year:'3rd Year',sem:5};
+const CR={D:['Database Management Systems','Dr. Anita Verma'],O:['Operating Systems','Dr. Priya Sharma'],N:['Computer Networks','Prof. Suresh Nair'],M:['Machine Learning','Dr. Karthik Rao'],S:['Software Engineering','Prof. Meera Iyer']};
+const TT={Mon:'D 09:00 10:00 C-204|O 10:00 11:00 C-302|N 11:30 12:30 B-201|D 14:00 16:00 Lab_3 L',Tue:'M 09:00 10:00 B-105|S 10:00 11:00 C-201|O 14:00 15:00 C-302|N 15:00 16:00 B-201',Wed:'D 09:00 10:00 C-204|M 11:00 12:00 B-105|O 14:00 15:00 C-302|M 15:00 17:00 Lab_2 L',Thu:'N 09:00 10:00 B-201|S 10:00 11:00 C-201|D 11:30 12:30 C-204|S 14:00 15:00 C-201',Fri:'O 09:00 10:00 C-302|M 10:00 11:00 B-105|N 14:00 16:00 Lab_1 L'};
+const F=R(`gate|Main Gate|🚪|300|345|Primary campus entry with security check and visitor desk.|24 hours|Ground|ID check, visitor desk, bike parking
+admin|Administrative Office|🏢|300|285|Fees, certificates, scholarships and student records.|Mon–Fri 9:30 AM–4:30 PM|Ground and 1st|Fee counter, certificate desk, grievance cell
+C|Academic Block C|🏫|300|215|CSE lecture halls C-201 to C-305, including C-302.|8 AM–6 PM|3 floors|Smart classrooms, wifi
+lib|Central Library|📚|300|130|Books, journals, reading halls and digital library access.|Mon–Sat 8 AM–8 PM, Sun 10 AM–4 PM|Ground to 2nd|Reading hall, e-library, group study rooms
+placement|Placement Cell|💼|300|50|Campus recruitment, internships and interview rooms.|Mon–Fri 10 AM–5 PM|1st|Interview rooms, resume clinic
+A|Academic Block A|🏫|130|215|Core science and mathematics classrooms.|8 AM–6 PM|3 floors|Classrooms, seminar hall
+cse|CSE Department|💻|130|125|Faculty cabins, HOD office and labs 1–3. Next to Block A, behind the library.|9 AM–5 PM|1st and 2nd|Labs 1–3, faculty cabins, project lab
+hostel|Hostel|🏠|100|315|Residence blocks H1–H4 with a mess.|Gate closes 10 PM|Blocks H1–H4|Mess, laundry, common room
+B|Academic Block B|🏫|470|215|Networks and electronics classrooms B-101 to B-210.|8 AM–6 PM|3 floors|Classrooms, electronics labs
+canteen|Canteen|🍽️|470|125|Meals, snacks and beverages.|8 AM–7 PM|Ground|Veg and non-veg counters, seating for 300
+audi|Auditorium|🎭|500|315|Venue for seminars, fests and workshops (500 seats).|During events|Ground|Stage, AV system, green room
+sports|Sports Complex|🏏|520|45|Cricket ground, courts, gym and indoor games.|6 AM–8 PM|Ground|Gym, basketball, badminton
+medical|Medical Center|🏥|100|45|First aid and a visiting doctor.|9 AM–5 PM (emergency 24 hours)|Ground|Doctor, pharmacy, ambulance`);
+const EV=R(`AI for Everyone Workshop|AI|2|10:00 AM|Auditorium|AI Club|Hands-on intro to building apps with LLM APIs.|AI,Machine Learning
+Greenfield Hack Night|Coding|4|6:00 PM|CSE Lab 3|Coding Club|12-hour overnight hackathon with mentors and prizes.|Hackathons,Web Development
+Full-Stack Web Bootcamp|Workshop|3|2:00 PM|Lab 2|Web Dev Cell|Build a React and Node app together.|Web Development
+LLMs in Education Seminar|Seminar|1|3:00 PM|Seminar Hall, Block A|CSE Department|Guest talk on large language models in learning.|AI,Machine Learning
+Placement Prep Seminar|Career|5|11:00 AM|Placement Cell|Training and Placement|Aptitude, resume and interview strategies.|Entrepreneurship
+Inter-Department Cricket|Sports|6|4:00 PM|Sports Complex|Sports Committee|Knockout cricket tournament.|Sports
+Rangmanch Cultural Night|Cultural|9|6:30 PM|Auditorium|Cultural Committee|Music, dance and drama showcase.|Cultural Events
+Robotics Club Meetup|Club|7|5:00 PM|Block B Lab|Robotics Club|Show-and-tell of club projects; new members welcome.|AI,Cybersecurity
+ML Mini-Hackathon|AI|12|9:00 AM|CSE Lab 1|AI Club|24-hour challenge on real campus datasets.|AI,Machine Learning,Hackathons,Data Science`).map((e,i)=>({i,n:e[0],cat:e[1],off:+e[2],t:e[3],loc:e[4],org:e[5],desc:e[6],tags:e[7].split(',')}));
+const RS=R(`Process Scheduling Notes|Operating Systems|Notes|CPU scheduling algorithms with worked examples.
+Memory Management Slides|Operating Systems|Lecture Slides|Paging, segmentation and virtual memory.
+OS Previous Exam 2025|Operating Systems|Previous Exam|Last year’s end-semester paper.
+SQL Practice Questions|Database Systems|Practice Questions|60 graded queries on joins and aggregates.
+Normalization Video Lecture|Database Systems|Video|1NF to BCNF explained with examples.
+DBMS Previous Exam 2025|Database Systems|Previous Exam|Last year’s end-semester paper.
+TCP/IP Notes|Computer Networks|PDF|Layers, addressing and transport protocols.
+Intro to ML Slides|Artificial Intelligence|Lecture Slides|Regression, classification and evaluation.
+Discrete Mathematics Practice Set|Mathematics|Practice Questions|Logic, sets and graph theory problems.
+Data Structures Cheat Sheet|Computer Science|PDF|Complexities and patterns on two pages.`);
+const SV=R(`bonafide|Bonafide Certificate|📜|Proof of enrolment for banks, visas and scholarships.|College ID, fee receipt|2–3 working days|Login to Student Services;Select “Bonafide Certificate”;Choose purpose;Upload required documents;Submit request;Track application status|Administrative Office, Counter 2|certificates@greenfield.edu
+id|ID Card|🪪|Replacement for a lost or damaged ID card.|Affidavit or FIR, passport photo, fee receipt|5 working days|Login to Student Services;Select “ID Card”;Upload photo and affidavit;Pay the fee;Collect the card from the office|Administrative Office, Counter 1|idcards@greenfield.edu
+scholarship|Scholarship|🎓|Merit and need-based scholarships.|Income certificate, last marksheet, bank details|2–4 weeks|Check eligibility;Fill the application;Upload documents;Get department verification;Track disbursement|Scholarship Cell, Admin Block 1st floor|scholarship@greenfield.edu
+transcript|Transcript|📄|Official academic transcript for jobs or higher studies.|Request form, ID card, fee receipt|5–7 working days|Login to Student Services;Select “Transcript”;Enter number of copies;Pay the fee;Collect or choose courier|Exam Cell, Admin Block|examcell@greenfield.edu
+fee|Fee Payment|💳|Pay tuition, hostel and exam fees online.|Student ID, fee challan|Instant receipt|Login to Student Services;Open “Fee Payment”;Select fee type;Pay online;Download receipt|Accounts Section, Admin Block|accounts@greenfield.edu
+hostel|Hostel|🏠|Apply for or renew hostel accommodation.|Admission letter, guardian form, photo|About 1 week|Fill the hostel form;Upload documents;Pay the hostel fee;Wait for warden verification;Receive room allotment|Hostel Warden Office|hostel@greenfield.edu
+exam|Exam Registration|📝|Register for semester examinations.|Hall ticket request, no-dues clearance|Same day|Check no-dues status;Open “Exam Registration”;Select subjects;Pay the exam fee;Download hall ticket|Exam Cell, Admin Block|examcell@greenfield.edu
+leave|Leave Application|🗓️|Apply for academic leave or attendance condonation.|Leave form, supporting document|1–2 working days|Login to Student Services;Open “Leave Application”;Enter dates and reason;Attach proof;Wait for HOD approval|CSE Department Office|cse.office@greenfield.edu`);
+const SR={bonafide:/bonafide|certificate/,id:/id card/,scholarship:/scholarship/,transcript:/transcript/,fee:/\bfees?\b|payment/,hostel:/hostel/,exam:/exam registration/,leave:/leave/};
+const DOCS=[...F.map(f=>({t:f[1],x:`${f[5]} Hours: ${f[6]}. Floor: ${f[7]}. Facilities: ${f[8]}.`})),...SV.map(s=>({t:s[1],x:`${s[3]} Documents: ${s[4]}. Processing: ${s[5]}. Office: ${s[7]}.`})),...R(`Library borrowing rules|Students can borrow up to 4 books for 14 days. Fine: ₹2 per day after the due date. Digital resources work on campus wifi.
+Attendance policy|At least 75% attendance is required to sit for semester exams.
+Exam rules|Carry your ID card and hall ticket. Mobile phones are not allowed in the exam hall.
+Assignment submission|Submit assignments on the LMS before the deadline; late submissions lose 10% marks per day.
+Academic calendar|The Exam Cell publishes the academic calendar on the student portal.`).map(d=>({t:d[0],x:d[1]}))];
+const PT={D:['ER model and relational algebra','SQL queries and joins','Normalization','Transactions and indexing'],O:['Processes and scheduling','Synchronization and deadlocks','Memory and paging','File systems'],N:['OSI/TCP-IP and addressing','Routing','TCP and UDP','Application protocols and security'],M:['Regression and classification','Evaluation and overfitting','Trees and SVM','Neural nets and clustering'],S:['SDLC models','Requirements and UML','Testing','Project management']};
+const ALLI=['AI','Machine Learning','Web Development','Cybersecurity','Data Science','Entrepreneurship','Hackathons','Sports','Cultural Events'];
+const NAV=[['home','Dashboard','🏠'],['chat','AI Assistant','✨'],['tt','Timetable','🗓️'],['map','Campus Map','🗺️'],['ev','Events','🎉'],['res','Resources','📚'],['svc','Services','🏛️'],['me','Profile','⚙️']];
+let cur='home',gt=0,msgs=[],mq='',sx='',ec='All',dq='',df='all',rc='All',tv='day',tday='',unread=4,tmr;
+let ints=st.get('ints',['AI','Machine Learning','Web Development','Hackathons']);const rg=new Set();
+const th=st.get('th','auto');if(th!='auto')document.documentElement.dataset.theme=th;
+const tm=s=>{const[h,m]=s.split(':');return h*60+ +m},f12=s=>{let[h,m]=s.split(':');h=+h;return`${h%12||12}:${m} ${h<12?'AM':'PM'}`};
+const cls=d=>(TT[d]||'').split('|').filter(Boolean).map(x=>{const[a,s,e,r,l]=x.split(' '),c=CR[a];return{n:c[0]+(l?' Lab':''),f:c[1],s,e,r:r.replace('_',' '),sm:tm(s),em:tm(e)}});
+const nowM=()=>{const n=new Date();return n.getHours()*60+n.getMinutes()};
+function nxt(){const m=nowM();for(let i=0;i<8;i++){const dd=DN[new Date(Date.now()+i*864e5).getDay()];for(const c of cls(dd))if(i>0||c.sm>m)return{c,i,d:dd,mins:i*1440+c.sm-m}}}
+const cd=n=>n.i?`Next on ${n.d} at ${f12(n.c.s)}`:n.mins<60?`Starts in ${n.mins} minute${n.mins==1?'':'s'}`:`Starts in ${Math.floor(n.mins/60)}h ${n.mins%60}m`;
+const dstr=o=>new Date(Date.now()+o*864e5).toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+const recs=()=>EV.map(e=>({...e,sc:e.tags.filter(t=>ints.includes(t)).length})).sort((a,b)=>b.sc-a.sc||a.off-b.off);
+const notifs=()=>{const n=nxt();return[`Your ${n.c.n} class: ${cd(n).toLowerCase()}.`,'AI Workshop registration closes tomorrow.','Library closes at 8 PM today.','Your exam registration deadline is approaching.']};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.className='show';clearTimeout(tmr);tmr=setTimeout(()=>t.className='',2200)};
+const cnt=()=>{$('#cnt').textContent=unread;$('#cnt').hidden=!unread};
+const evCard=e=>`<div class="card ev"><div class=row><span class=pill>${e.cat}</span><span class=mut>${dstr(e.off)}, ${e.t}</span></div><h3>${e.n}</h3><p>${e.desc}</p><p class=mut>📍 ${e.loc} · ${e.org}</p><div class=row><button class="btn ${rg.has(e.i)?'ok':''}" data-a=reg data-v=${e.i}>${rg.has(e.i)?'Registered ✓':'Register'}</button><span class=mut>${rg.has(e.i)?'You’re in':e.i==0?'Closes tomorrow':'Registration open'}</span></div></div>`;
+const SK='<div class=sk></div><div class=sk></div><div class=sk></div>';
+const P={};
+P.home=()=>{const n=nxt(),L=cls(DN[new Date().getDay()]),h=new Date().getHours();return`<h2 style="font-size:26px;margin-top:4px">${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, Rahul 👋</h2><p class=mut style="margin-top:0">Here’s what’s happening around your campus today.</p>
+<div class=qa>${[['chat','✨','Ask Campus AI'],['tt','🗓️','View Timetable'],['map','📍','Find a Classroom'],['ev','🎉','Explore Events'],['res','📚','Academic Resources'],['svc','🏛️','Administrative Services']].map(a=>`<button class=card data-go=${a[0]}><b>${a[1]}</b>${a[2]}</button>`).join('')}</div>
+<div class=g2><div class="card hero"><span class=mut>Next class</span><h2>${n.c.n}</h2><div>${f12(n.c.s)} – ${f12(n.c.e)} · Room ${n.c.r}</div><div>Faculty: ${n.c.f}</div><p style="margin:8px 0 0;font-weight:700;color:#fcd34d" id=cd>${cd(n)}</p></div>
+<button class=card data-ask="Create a 7-day Machine Learning study plan." style="background:#f59e0b18;border-color:var(--am)"><span class=mut>AI Suggestion</span>You have a Machine Learning exam next week. Would you like me to create a 7-day study plan?</button></div>
+<h3>Today’s schedule</h3>${L.length?L.map(c=>`<div class="card cl"><div class=tm>${f12(c.s)}</div><div><b>${c.n}</b><br><span class=mut>📍 ${c.r} · ${c.f}</span></div></div>`).join(''):'<div class="card empty">No classes today. Your next one is on '+n.d+'.</div>'}
+<h3>Recommended events</h3><div class=g>${recs().slice(0,3).map(evCard).join('')}</div>
+<h3>Campus updates</h3><div class=card>📚 Library extended hours today<br>💼 Placement registration closes Friday<br>🤖 AI workshop registrations open</div>`};
+P.chat=()=>`<div class=row style="justify-content:space-between"><div><h2 style="margin:6px 0 0">Campus Copilot</h2><span class=mut>Ask me anything about your campus.</span></div><button class="btn ghost" data-a=clear>Clear chat</button></div><div id=ms></div><div class=cin><div class=row><input id=ci placeholder="Ask about classes, events, services…" maxlength=300 onkeydown="if(event.key=='Enter')A.send()"><button class=btn data-a=send>Send</button></div></div>`;
+const SUG=['Where is my next class?','What events are happening this week?','How do I apply for a bonafide certificate?','What are the library timings?','Help me prepare for my DBMS exam.','Find AI workshops happening this month.'];
+const bub=m=>m.r=='u'?`<div class="b u">${m.h}</div>`:`<div class="b a">${m.h}${m.src===false?'':'<div class=src>📚 Based on campus information</div>'}${(m.fu||[]).length?`<div class=row style="margin-top:8px">${m.fu.map(f=>`<button class=chip data-ask="${esc(f)}">${esc(f)}</button>`).join('')}</div>`:''}</div>`;
+function draw(typ){const e=$('#ms');if(!e)return;e.innerHTML=(msgs.length?msgs.map(bub).join(''):`<div class=empty>✨<br>Try one of these:<div class=row style="justify-content:center;margin-top:10px">${SUG.map(q=>`<button class=chip data-ask="${esc(q)}">${esc(q)}</button>`).join('')}</div></div>`)+(typ?'<div class="b a"><span class=dots><i></i><i></i><i></i></span> Campus Copilot is thinking…</div>':'');if(msgs.length)e.lastElementChild.scrollIntoView({block:'end'})}
+function ask(q){q=String(q).trim().slice(0,300);if(!q)return;if(cur!='chat')go('chat',1);msgs.push({r:'u',h:esc(q)});draw(1);setTimeout(()=>{let m;try{m=reply(q)}catch(e){m={h:'⚠️ Something went wrong. Please try again.',fu:[],src:false}}msgs.push({r:'a',...m});draw()},900)}
+const plan=k=>{const t=PT[k],n=k?CR[k][0]:'exam',d=k?[...t,'Solve practice questions from Resources','Attempt a timed previous exam paper','Revise weak topics and take a mock test']:['Database Management Systems','Operating Systems','Computer Networks','Machine Learning','Software Engineering','Previous exam papers','Revision and mock tests'];return`<b>7-day ${n} study plan</b>`+d.map((x,i)=>`<div>Day ${i+1}: ${x}</div>`).join('')};
+const evList=a=>a.map(e=>`<div>• <b>${e.n}</b>: ${dstr(e.off)}, ${e.t}, ${e.loc}</div>`).join('');
+function reply(q){const s=q.toLowerCase(),has=r=>r.test(s),sj=has(/\bos\b|operating/)?'O':has(/dbms|database/)?'D':has(/network|\bcn\b/)?'N':has(/\bml\b|machine/)?'M':has(/software|\bse\b/)?'S':'';
+if(has(/next class|next lecture/)){const n=nxt();return{h:`Your next class is <b>${n.c.n}</b>, ${f12(n.c.s)}–${f12(n.c.e)} in <b>${n.c.r}</b> with ${n.c.f}. ${cd(n)}.`,fu:['Where is the CSE department?','What classes do I have today?']}}
+if(has(/class(es)?.*today|today.*class|my schedule|timetable/)){const L=cls(DN[new Date().getDay()]);return{h:L.length?'<b>Today’s classes</b>'+L.map(c=>`<div>• ${f12(c.s)}–${f12(c.e)} ${c.n} (${c.r})</div>`).join(''):'You have no classes today.',fu:['Where is my next class?']}}
+if(has(/faculty|professor|who teach|who is my|taught by/)){const l=sj?[CR[sj]]:Object.values(CR);return{h:l.map(c=>`<div><b>${c[0]}</b>: ${c[1]}</div>`).join(''),fu:['What resources do I have for Operating Systems?']}}
+if(has(/study plan|prepare|preparation/))return{h:plan(sj),fu:['What resources do I have for Operating Systems?','Recommend an event for me']};
+if(has(/recommend/)){const e=recs()[0];return{h:`I’d recommend <b>${e.n}</b> (${dstr(e.off)}, ${e.t}, ${e.loc}). It matches your interests: ${e.tags.filter(t=>ints.includes(t)).join(', ')||'campus life'}.`,fu:['What AI events are happening this week?']}}
+if(has(/event|workshop|hackathon|happening/)){const w=has(/month/)?30:7,l=EV.filter(e=>e.off<=w&&(!has(/\bai\b/)||e.cat=='AI'||e.tags.includes('AI'))).sort((a,b)=>a.off-b.off);return{h:l.length?`<b>${l.length} event${l.length>1?'s':''} in the next ${w} days</b>`+evList(l):`I don’t see matching events in the next ${w} days.`,fu:['Recommend an event for me']}}
+if(!has(/^where/)){const v=SV.find(v=>SR[v[0]].test(s));if(v)return{h:`<b>${v[1]}</b><br>${v[3]}<ol>${v[6].split(';').map(x=>`<li>${x}</li>`).join('')}</ol>📄 ${v[4]}<br>⏱ ${v[5]}<br>📍 ${v[7]} · ✉ ${v[8]}`,fu:['What are the library timings?']}}
+if(has(/resource|notes|material|slides|practice/)){const m={O:'Operating Systems',D:'Database Systems',N:'Computer Networks',M:'Artificial Intelligence',S:'Computer Science'}[sj],l=RS.filter(r=>!m||r[1]==m);return{h:l.length?`<b>${l.length} resources${m?' for '+m:''}</b>`+l.map(r=>`<div>• ${r[0]} (${r[2]})</div>`).join(''):'I don’t have resources for that subject yet.',fu:['Create a 7-day DBMS study plan']}}
+const sw='what the are for how where who can you does with and about'.split(' '),w=(s.replace(/timings?|opening|open|closes?/g,'hours').match(/[a-z]{3,}/g)||[]).filter(x=>!sw.includes(x)),sc=d=>w.reduce((a,x)=>a+(d.t.toLowerCase().includes(x)?3:0)+(d.x.toLowerCase().includes(x)?1:0),0),b=DOCS.map(d=>[sc(d),d]).sort((a,b)=>b[0]-a[0])[0];
+if(b&&b[0]>=2)return{h:`<b>${b[1].t}</b><br>${b[1].x}`,fu:['What classes do I have today?','What events are happening this week?']};
+return{h:'I don’t have that information in the campus data available to me. Please check with the relevant office, or ask about classes, events, facilities or services.',src:false,fu:SUG.slice(0,3)}}
+P.tt=()=>{const td=DN[new Date().getDay()],d=tday||(TT[td]?td:'Mon'),n=nxt(),m=nowM(),row=(c,day)=>{const t=day==td,now=t&&c.sm<=m&&m<c.em,up=t&&n.i==0&&n.c.s==c.s;return`<div class="card cl ${now?'now':up?'up':''}"><div class=tm>${f12(c.s)}<br><small class=mut>${f12(c.e)}</small></div><div><b>${c.n}</b> ${now?'<span class=pill>Now</span>':up?'<span class=pill>Up next</span>':''}<br><span class=mut>📍 ${c.r} · 👤 ${c.f}</span></div></div>`};
+return`<div class=row>${Object.keys(TT).map(x=>`<button class="chip ${tv=='day'&&x==d?'on':''}" data-a=day data-v=${x}>${x}</button>`).join('')}<button class="chip ${tv=='week'?'on':''}" data-a=view data-v=${tv=='day'?'week':'day'}>${tv=='day'?'Week view':'Day view'}</button></div>`+(tv=='day'?[d]:Object.keys(TT)).map(x=>(tv=='week'?`<h3>${x}</h3>`:'')+cls(x).map(c=>row(c,x)).join('')).join('')+'<p><button class=btn data-ask="What classes do I have today?">✨ Ask AI about my timetable</button></p>'};
+P.map=()=>`<input placeholder="Search campus locations…" value="${esc(mq)}" oninput="mq=this.value;mapQ()"><div id=mp></div>`;
+function mapQ(){const q=mq.trim().toLowerCase(),h=q&&F.find(f=>f[1].toLowerCase().includes(q));if(h)sx=h[0];mapDraw()}
+function mapDraw(){const e=$('#mp');if(!e)return;const q=mq.trim().toLowerCase(),hl=q?F.filter(f=>f[1].toLowerCase().includes(q)).map(f=>f[0]):[],s=F.find(f=>f[0]==sx);
+e.innerHTML=`<svg viewBox="0 0 600 380" style="width:100%;border-radius:14px;background:#10b9811f;border:1px solid var(--bd)"><path d="M300 345V50M130 215H470M130 125H470M100 315H500" stroke="var(--bd)" stroke-width=12 fill=none />${s&&s[0]!='gate'?`<path class=rt d="M300 345V${s[4]}H${s[3]}"/>`:''}${F.map(f=>`<g class="n ${hl.includes(f[0])?'hl':''} ${f[0]==sx?'sel':''}" data-a=sel data-v=${f[0]}><circle cx=${f[3]} cy=${f[4]} r=17 /><text x=${f[3]} y=${+f[4]+5}>${f[2]}</text><text class=lb x=${f[3]} y=${+f[4]+33}>${f[1]}</text></g>`).join('')}</svg>`+(s?`<div class=card style="margin-top:12px"><h3 style="margin:0">${s[2]} ${s[1]}</h3><p>${s[5]}</p><p class=mut>🕘 ${s[6]} · 🏢 ${s[7]}<br>Facilities: ${s[8]}</p><div class=row><button class=btn data-ask="Where is the ${s[1]}?">✨ Ask Campus AI</button>${s[0]!='gate'?'<span class=mut>Dashed route starts at the Main Gate</span>':''}</div></div>`:'<p class=empty>Tap a location to see details and a route from the Main Gate.</p>')}
+P.ev=()=>`<h3 style="margin-top:0">Recommended for you</h3><div class=g>${recs().slice(0,3).map(evCard).join('')}</div><h3>All events</h3><div class=row><input style="flex:1;min-width:160px" placeholder="Search events…" value="${esc(dq)}" oninput="dq=this.value;evDraw()"><select style="width:auto" onchange="df=this.value;evDraw()"><option value=all>Any date<option value=7 ${df=='7'?'selected':''}>This week<option value=30 ${df=='30'?'selected':''}>This month</select></div><div class=row id=ec style="margin:8px 0"></div><div class=g id=el></div>`;
+function evDraw(){if(!$('#el'))return;$('#ec').innerHTML=['All','AI','Coding','Workshop','Seminar','Sports','Cultural','Club','Career'].map(c=>`<button class="chip ${ec==c?'on':''}" data-a=cat data-v=${c}>${c}</button>`).join('');const q=dq.toLowerCase(),l=EV.filter(e=>(ec=='All'||e.cat==ec)&&(df=='all'||e.off<=+df)&&(e.n+e.desc+e.loc).toLowerCase().includes(q)).sort((a,b)=>a.off-b.off);$('#el').innerHTML=l.length?l.map(evCard).join(''):'<div class=empty style="grid-column:1/-1">No events match. Try another category or date range.</div>'}
+P.res=()=>`<p><button class=btn data-ask="Create a 7-day study plan for my upcoming exams based on my courses.">✨ Create Study Plan</button></p><div class=row>${['All','Computer Science','Mathematics','Artificial Intelligence','Database Systems','Operating Systems','Computer Networks'].map(c=>`<button class="chip ${rc==c?'on':''}" data-a=rc data-v="${c}">${c}</button>`).join('')}</div><div class=g style="margin-top:12px">${RS.filter(r=>rc=='All'||r[1]==rc).map(r=>`<div class=card><span class=pill>${r[2]}</span><h3 style="margin:8px 0 2px">${r[0]}</h3><div class=mut>${r[1]}</div><p>${r[3]}</p><button class="btn ghost" data-a=link>${r[2]=='Video'?'Watch':'Download'}</button></div>`).join('')}</div>`;
+P.svc=()=>`<div class=g>${SV.map(v=>`<details class=card><summary>${v[2]} ${v[1]}<div class=mut style="font-weight:400">${v[3]}</div></summary><p><b>Documents:</b> ${v[4]}<br><b>Processing time:</b> ${v[5]}<br><b>Office:</b> ${v[7]}<br><b>Contact:</b> ${v[8]}</p><b>Steps</b><ol>${v[6].split(';').map(x=>`<li>${x}</li>`).join('')}</ol><button class=btn data-ask="How do I apply for ${v[1]}?">✨ Ask Campus AI</button></details>`).join('')}</div>`;
+P.me=()=>`<div class=card><div class=row><div style="font-size:42px">🧑‍🎓</div><div><h2 style="margin:0">${U.name}</h2><span class=mut>${U.email}</span></div></div><p><b>Department:</b> ${U.dept}<br><b>Year:</b> ${U.year} · <b>Semester:</b> ${U.sem}<br><b>Courses:</b> ${Object.values(CR).map(c=>c[0]).join(', ')}</p></div><h3>Interests</h3><p class=mut style="margin-top:0">Tap to update. Event recommendations change right away.</p><div class=row>${ALLI.map(i=>`<button class="chip ${ints.includes(i)?'on':''}" data-a=int data-v="${i}">${i}</button>`).join('')}</div><h3>Settings</h3><div class=row>Theme: ${['auto','light','dark'].map(t=>`<button class="chip ${st.get('th','auto')==t?'on':''}" data-a=theme data-v=${t}>${t}</button>`).join('')}</div><p class=mut>AI mode: Demo. Answers come from built-in sample campus data; no LLM key is configured.</p><button class="btn ghost" data-a=out>Sign out</button>`;
+function go(p,now){cur=p;const t=++gt;$('#np').hidden=true;$('#ttl').textContent=NAV.find(n=>n[0]==p)[1];$$('.nv').forEach(b=>b.classList.toggle('on',b.dataset.go==p));const fin=()=>{try{$('#main').innerHTML=P[p]();if(p=='map')mapDraw();if(p=='chat')draw();if(p=='ev')evDraw()}catch(e){$('#main').innerHTML='<div class="card empty">Something went wrong loading this page.<br><br><button class=btn data-go='+p+'>Try again</button></div>'}};if(now)fin();else{$('#main').innerHTML=SK;scrollTo(0,0);setTimeout(()=>t==gt&&fin(),220)}}
+const A={login(){if($('#em').value.trim().toLowerCase()==U.email&&$('#pw').value=='demo123')A.demo();else $('#er').textContent='Invalid email or password. Try the demo account.'},
+demo(){$('#login').hidden=true;$('#app').hidden=false;$('#sn').innerHTML=$('#bnav').innerHTML=NAV.map(n=>`<button class=nv data-go=${n[0]}><span>${n[2]}</span>${n[1]}</button>`).join('');cnt();go('home')},
+bell(){const p=$('#np');p.hidden=!p.hidden;p.innerHTML='<b>Notifications</b>'+notifs().map(n=>`<div class=nt>🔔 ${n}</div>`).join('')+'<p style="margin:10px 0 0"><button class="btn ghost" data-a=readall>Mark all read</button></p>'},
+readall(){unread=0;cnt();$('#np').hidden=true},
+out(){$('#app').hidden=true;$('#login').hidden=false;msgs=[]},
+clear(){msgs=[];draw()},
+send(){const i=$('#ci');ask(i.value);i.value=''},
+reg(v){v=+v;rg.has(v)?rg.delete(v):rg.add(v);toast(rg.has(v)?'Registered ✓':'Registration cancelled');cur=='ev'?(P.ev,go('ev',1)):go(cur,1)},
+int(v){ints=ints.includes(v)?ints.filter(x=>x!=v):[...ints,v];st.set('ints',ints);go('me',1)},
+sel(v){sx=v;mapDraw()},
+cat(v){ec=v;evDraw()},
+rc(v){rc=v;go('res',1)},
+day(v){tday=v;tv='day';go('tt',1)},
+view(v){tv=v;go('tt',1)},
+theme(v){if(v=='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=v;st.set('th',v);go('me',1)},
+link(){toast('Demo mode: resource links are placeholders')}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a],[data-go],[data-ask]');if(!t)return;if(t.dataset.go)go(t.dataset.go);else if(t.dataset.ask!==undefined)ask(t.dataset.ask);else A[t.dataset.a]?.(t.dataset.v)});
+setInterval(()=>{const e=$('#cd'),n=nxt();if(e&&n)e.textContent=cd(n)},30000);
+</script></body></html>
